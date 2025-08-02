@@ -12,13 +12,18 @@ pip install -r app/requirements.txt
 echo "🚀 Starting application (this will generate errors)..."
 
 # Create logs directory if it doesn't exist
+echo "📁 Creating logs directory..."
 mkdir -p logs
+echo "✅ logs directory created: $(ls -ld logs)"
 
 cd app
+echo "📁 Changed to app directory: $(pwd)"
 
 # Start the application and capture logs
+echo "🔄 Starting Python application and capturing logs..."
 python main.py > ../logs/application.log 2>&1 &
 APP_PID=$!
+echo "🔄 Application started with PID: $APP_PID"
 
 # Give the app a moment to start
 sleep 2
@@ -66,9 +71,12 @@ kill $APP_PID 2>/dev/null || true
 wait $APP_PID 2>/dev/null || true
 
 # Ensure we have some log content for analysis
+echo "🔍 Checking log file status..."
 if [ ! -f "../logs/application.log" ] || [ ! -s "../logs/application.log" ]; then
     echo "⚠️  No application logs generated. Creating sample error logs for demonstration..."
-    cat > ../logs/application.log << 'EOF'
+    cd .. # Make sure we're in the root directory
+    mkdir -p logs # Ensure logs directory exists
+    cat > logs/application.log << 'EOF'
 [CRITICAL] 2024-08-02 12:34:56 - Failed to start application: Unable to initialize critical service: payment-service
 [ERROR] 2024-08-02 12:34:56 - Database connection failed: could not connect to server: Connection refused
 [ERROR] 2024-08-02 12:34:56 - Service 'payment-service' is not responding on port 8080
@@ -80,6 +88,10 @@ if [ ! -f "../logs/application.log" ] || [ ! -s "../logs/application.log" ]; the
 [CRITICAL] 2024-08-02 12:34:59 - Unable to initialize critical service: payment-service
 [ERROR] 2024-08-02 12:34:59 - RuntimeError: Unable to initialize critical service: payment-service
 EOF
+    echo "✅ Sample logs created: $(wc -l < logs/application.log) lines"
+else
+    cd .. # Make sure we're in the root directory
+    echo "✅ Application logs found: $(wc -l < logs/application.log) lines"
 fi
 
 echo "✅ Error generation complete. Logs saved to logs/application.log"

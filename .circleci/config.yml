@@ -38,9 +38,30 @@ jobs:
             chmod +x generate_errors.sh
             chmod +x scripts/run_analysis_pipeline.sh
 
+            # Debug: Check current directory and files
+            echo "📁 Current directory: $(pwd)"
+            echo "📁 Directory contents:"
+            ls -la
+
             # Generate realistic errors by running the application
             echo "📝 Generating application logs with realistic errors..."
             ./generate_errors.sh || echo "Expected failures occurred during health checks"
+
+            # Debug: Check if logs were created
+            echo "📁 Checking for logs after script execution:"
+            if [ -d "logs" ]; then
+                echo "✅ logs directory exists"
+                ls -la logs/
+                if [ -f "logs/application.log" ]; then
+                    echo "✅ application.log exists ($(wc -l < logs/application.log) lines)"
+                    echo "📝 First few lines of log:"
+                    head -3 logs/application.log
+                else
+                    echo "❌ application.log not found in logs directory"
+                fi
+            else
+                echo "❌ logs directory does not exist"
+            fi
 
       - run:
           name: AI-Powered Error Analysis
