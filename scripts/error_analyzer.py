@@ -8,8 +8,16 @@ import sys
 from datetime import datetime
 from embedchain import App
 
-# Set your OpenAI API key
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+# Check for OpenAI API key
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    print("❌ Error: OPENAI_API_KEY environment variable is not set!")
+    print("   Please set your OpenAI API key:")
+    print("   export OPENAI_API_KEY='your-api-key-here'")
+    exit(1)
+
+# Set the API key for embedchain
+os.environ["OPENAI_API_KEY"] = openai_api_key
 
 def analyze_error_logs(log_file_path="logs/application.log"):
     """
