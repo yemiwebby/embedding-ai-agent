@@ -27,6 +27,25 @@ def analyze_error_logs(log_file_path="logs/application.log"):
         # Initialize Embedchain app
         app = App()
         
+        # Debug: Check current working directory and list files
+        current_dir = os.getcwd()
+        print(f"🔍 Current working directory: {current_dir}")
+        print(f"🔍 Looking for log file at: {os.path.abspath(log_file_path)}")
+        
+        # List contents of logs directory if it exists
+        logs_dir = os.path.dirname(log_file_path) or "."
+        if os.path.exists(logs_dir):
+            print(f"📁 Contents of {logs_dir}:")
+            for item in os.listdir(logs_dir):
+                item_path = os.path.join(logs_dir, item)
+                if os.path.isfile(item_path):
+                    size = os.path.getsize(item_path)
+                    print(f"   📄 {item} ({size} bytes)")
+                else:
+                    print(f"   📁 {item}/")
+        else:
+            print(f"❌ Directory {logs_dir} does not exist")
+        
         # Read the log file
         if not os.path.exists(log_file_path):
             print(f"❌ Error: Log file {log_file_path} not found")
