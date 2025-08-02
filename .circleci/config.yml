@@ -34,9 +34,6 @@ jobs:
             echo "🔍 Running application health checks..."
             echo "⚠️  This will intentionally generate errors for demonstration"
 
-            # Create logs directory if it doesn't exist
-            mkdir -p logs
-
             # Make scripts executable
             chmod +x generate_errors.sh
             chmod +x scripts/run_analysis_pipeline.sh

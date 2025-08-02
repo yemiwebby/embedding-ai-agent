@@ -10,6 +10,10 @@ echo "📦 Installing Python dependencies..."
 pip install -r app/requirements.txt
 
 echo "🚀 Starting application (this will generate errors)..."
+
+# Create logs directory if it doesn't exist
+mkdir -p logs
+
 cd app
 
 # Start the application and capture logs
