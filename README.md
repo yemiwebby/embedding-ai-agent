@@ -2,7 +2,7 @@
 
 This project demonstrates how to embed AI agents into CI/CD pipelines using Embedchain to automatically analyze and understand application errors, transforming hours of manual debugging into instant AI-powered insights.
 
-## 🎯 Project Overview
+## Project Overview
 
 Instead of drowning in endless error logs when deployments fail, this system:
 
@@ -12,7 +12,7 @@ Instead of drowning in endless error logs when deployments fail, this system:
 - Uses AI to analyze the errors and provide actionable insights
 - Delivers expert-level analysis automatically in your CI/CD pipeline
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 circle_ci_agent_demo/
@@ -31,7 +31,7 @@ circle_ci_agent_demo/
 └── README.md
 ```
 
-## 🚀 How It Works
+## How It Works
 
 ### 1. Realistic Application
 
@@ -51,7 +51,7 @@ circle_ci_agent_demo/
 - Provides structured analysis: critical issues, patterns, root causes
 - Generates actionable recommendations for fixing the problems
 
-## 🔧 Configuration Files
+## Configuration Files
 
 ### Success Configuration (`config/success.env`)
 
@@ -81,7 +81,7 @@ This simplified approach teaches developers about:
 - **API versioning problems** and backward compatibility
 - **Security implications** of wrong protocol usage
 
-## 📊 Types of Errors Generated
+## Types of Errors Generated
 
 The application generates realistic errors that mirror production issues:
 
@@ -92,7 +92,7 @@ The application generates realistic errors that mirror production issues:
 - **Integration Failures**: Email service down, event bus unavailable
 - **Critical Crashes**: Unhandled exceptions, service initialization failures
 
-## 🤖 AI Analysis Features
+## AI Analysis Features
 
 The AI analyzer provides:
 
@@ -102,7 +102,7 @@ The AI analyzer provides:
 - **Root Cause Analysis**: Understanding the underlying problems
 - **Actionable Recommendations**: Specific steps to resolve issues
 
-## 🛠️ Local Development
+## Local Development
 
 ### Prerequisites
 
@@ -135,7 +135,7 @@ The AI analyzer provides:
    ./scripts/run_analysis_pipeline.sh
    ```
 
-## 🔄 CircleCI Integration
+## CircleCI Integration
 
 The pipeline automatically:
 
@@ -146,7 +146,7 @@ The pipeline automatically:
 5. Displays actionable insights
 6. Archives results as artifacts
 
-## 📈 Benefits
+## Benefits
 
 - **Faster Debugging**: Reduce hours of manual log analysis to minutes
 - **Expert Insights**: Get senior-developer-level analysis automatically
@@ -154,7 +154,7 @@ The pipeline automatically:
 - **Actionable Results**: Receive specific recommendations, not just error summaries
 - **Team Efficiency**: Free developers to focus on solving problems rather than finding them
 
-## 🎓 Educational Value
+## Educational Value
 
 This project teaches:
 
@@ -164,7 +164,7 @@ This project teaches:
 - Integrating AI tools into existing CI/CD pipelines
 - Moving from reactive to proactive error management
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - Integration with monitoring tools (Prometheus, Grafana)
 - Automated ticket creation for critical issues

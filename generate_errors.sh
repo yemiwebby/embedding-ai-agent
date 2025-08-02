@@ -1,42 +1,42 @@
 #!/bin/bash
 
-echo "🔧 Running E-commerce App with Failure Configuration..."
+echo "Running E-commerce App with Failure Configuration..."
 
 # Load failure configuration
 if [ -f "config/failure.env" ]; then
     export $(cat config/failure.env | grep -v '^#' | xargs)
-    echo "✅ Loaded failure configuration"
+    echo "Loaded failure configuration"
 else
-    echo "⚠️  config/failure.env not found, using default settings"
+    echo "Warning: config/failure.env not found, using default settings"
 fi
 
-echo "📦 Installing Python dependencies..."
+echo "Installing Python dependencies..."
 if [ -f "app/requirements.txt" ]; then
-    pip install -r app/requirements.txt || echo "⚠️  Dependencies already installed or install failed"
+    pip install -r app/requirements.txt || echo "Warning: Dependencies already installed or install failed"
 else
-    echo "⚠️  app/requirements.txt not found, skipping dependency installation"
+    echo "Warning: app/requirements.txt not found, skipping dependency installation"
 fi
 
-echo "🚀 Starting application (this will generate errors)..."
+echo "Starting application (this will generate errors)..."
 
 # Create logs directory if it doesn't exist
-echo "📁 Creating logs directory..."
+echo "Creating logs directory..."
 mkdir -p logs
-echo "✅ logs directory created: $(ls -ld logs)"
+echo "Logs directory created: $(ls -ld logs)"
 
 cd app
-echo "📁 Changed to app directory: $(pwd)"
+echo "Changed to app directory: $(pwd)"
 
 # Start the application and capture logs
-echo "🔄 Starting Python application and capturing logs..."
+echo "Starting Python application and capturing logs..."
 if [ -f "main.py" ]; then
     python main.py > ../logs/application.log 2>&1 &
     APP_PID=$!
-    echo "🔄 Application started with PID: $APP_PID"
+    echo "Application started with PID: $APP_PID"
 else
-    echo "❌ main.py not found in app directory"
+    echo "Error: main.py not found in app directory"
     cd ..
-    echo "🔄 Creating sample logs instead..."
+    echo "Creating sample logs instead..."
     # Jump to the fallback log creation
     mkdir -p logs
     cat > logs/application.log << 'EOF'
@@ -44,18 +44,18 @@ else
 [ERROR] 2024-08-02 12:34:56 - Application startup failed - file not found
 [ERROR] 2024-08-02 12:34:56 - Unable to initialize Flask application
 EOF
-    echo "✅ Sample logs created due to missing main.py"
+    echo "Sample logs created due to missing main.py"
     exit 0
 fi
 
 # Give the app a moment to start
 sleep 2
 
-echo "🧪 Testing endpoints to generate realistic errors..."
+echo "Testing endpoints to generate realistic errors..."
 
 # Check if the app is still running (it might have crashed on startup)
 if kill -0 $APP_PID 2>/dev/null; then
-    echo "✅ App is running, testing HTTP endpoints..."
+    echo "App is running, testing HTTP endpoints..."
     
     # Test health check
     echo "Testing health endpoint..."
@@ -83,20 +83,20 @@ if kill -0 $APP_PID 2>/dev/null; then
     # Wait a bit more for logs to accumulate
     sleep 3
 else
-    echo "⚠️  App crashed during startup (simulated critical failure)"
+    echo "Warning: App crashed during startup (simulated critical failure)"
     echo "This generates realistic startup failure logs for analysis"
     sleep 2
 fi
 
 # Stop the application
-echo "🛑 Stopping application..."
+echo "Stopping application..."
 kill $APP_PID 2>/dev/null || true
 wait $APP_PID 2>/dev/null || true
 
 # Ensure we have some log content for analysis
-echo "🔍 Checking log file status..."
+echo "Checking log file status..."
 if [ ! -f "../logs/application.log" ] || [ ! -s "../logs/application.log" ]; then
-    echo "⚠️  No application logs generated. Creating sample error logs for demonstration..."
+    echo "No application logs generated. Creating sample error logs for demonstration..."
     cd .. # Make sure we're in the root directory
     mkdir -p logs # Ensure logs directory exists
     cat > logs/application.log << 'EOF'
@@ -111,10 +111,10 @@ if [ ! -f "../logs/application.log" ] || [ ! -s "../logs/application.log" ]; the
 [CRITICAL] 2024-08-02 12:34:59 - Unable to initialize critical service: payment-service
 [ERROR] 2024-08-02 12:34:59 - RuntimeError: Unable to initialize critical service: payment-service
 EOF
-    echo "✅ Sample logs created: $(wc -l < logs/application.log) lines"
+    echo "Sample logs created: $(wc -l < logs/application.log) lines"
 else
     cd .. # Make sure we're in the root directory
-    echo "✅ Application logs found: $(wc -l < logs/application.log) lines"
+    echo "Application logs found: $(wc -l < logs/application.log) lines"
 fi
 
-echo "✅ Error generation complete. Logs saved to logs/application.log"
+echo "Error generation complete. Logs saved to logs/application.log"

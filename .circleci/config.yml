@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Verify Environment
           command: |
-            echo "✅ Environment check:"
+            echo "Environment check:"
             echo "- Python version: $(python3 --version)"
             echo "- Working directory: $(pwd)"
             echo "- OPENAI_API_KEY configured: ${OPENAI_API_KEY:+Yes}${OPENAI_API_KEY:-No}"
@@ -23,51 +23,51 @@ jobs:
       - run:
           name: Deploy Application (Simulate Deployment)
           command: |
-            echo "🚀 Simulating application deployment..."
-            echo "📦 Installing application dependencies..."
+            echo "Simulating application deployment..."
+            echo "Installing application dependencies..."
             pip install -r app/requirements.txt
-            echo "✅ Application deployment completed"
+            echo "Application deployment completed"
 
       - run:
           name: Run Application Health Checks
           command: |
-            echo "🔍 Running application health checks..."
-            echo "⚠️  This will intentionally generate errors for demonstration"
+            echo "Running application health checks..."
+            echo "This will intentionally generate errors for demonstration"
 
             # Make scripts executable
             chmod +x generate_errors.sh
             chmod +x scripts/run_analysis_pipeline.sh
 
             # Debug: Check current directory and files
-            echo "📁 Current directory: $(pwd)"
-            echo "📁 Directory contents:"
+            echo "Current directory: $(pwd)"
+            echo "Directory contents:"
             ls -la
 
             # Generate realistic errors by running the application
-            echo "📝 Generating application logs with realistic errors..."
+            echo "Generating application logs with realistic errors..."
             ./generate_errors.sh || echo "Expected failures occurred during health checks"
 
             # Debug: Check if logs were created
-            echo "📁 Checking for logs after script execution:"
+            echo "Checking for logs after script execution:"
             if [ -d "logs" ]; then
-                echo "✅ logs directory exists"
+                echo "logs directory exists"
                 ls -la logs/
                 if [ -f "logs/application.log" ]; then
-                    echo "✅ application.log exists ($(wc -l < logs/application.log) lines)"
-                    echo "📝 First few lines of log:"
+                    echo "application.log exists ($(wc -l < logs/application.log) lines)"
+                    echo "First few lines of log:"
                     head -3 logs/application.log
                 else
-                    echo "❌ application.log not found in logs directory"
+                    echo "application.log not found in logs directory"
                 fi
             else
-                echo "❌ logs directory does not exist"
+                echo "logs directory does not exist"
             fi
 
       - run:
           name: AI-Powered Error Analysis
           command: |
-            echo "🤖 Starting AI-powered error analysis..."
-            echo "📊 This is where the magic happens - AI analyzes the errors!"
+            echo "Starting AI-powered error analysis..."
+            echo "This is where the magic happens - AI analyzes the errors!"
 
             # Set up environment for AI analysis
             python3 -m venv analysis_env
@@ -81,37 +81,37 @@ jobs:
       - run:
           name: Display Analysis Results
           command: |
-            echo "📋 AI Analysis Results:"
+            echo "AI Analysis Results:"
             echo "======================"
 
             # Find the most recent analysis file
             ANALYSIS_FILE=$(ls -t error_analysis_*.md 2>/dev/null | head -1)
 
             if [ -n "$ANALYSIS_FILE" ]; then
-              echo "📄 Displaying AI analysis from: $ANALYSIS_FILE"
+              echo "Displaying AI analysis from: $ANALYSIS_FILE"
               echo ""
               cat "$ANALYSIS_FILE"
             else
-              echo "⚠️  No analysis file found. Checking for logs..."
+              echo "No analysis file found. Checking for logs..."
               if [ -f "logs/application.log" ]; then
-                echo "📝 Raw application logs:"
+                echo "Raw application logs:"
                 cat logs/application.log
               else
-                echo "❌ No logs or analysis found"
+                echo "No logs or analysis found"
               fi
             fi
 
       - run:
           name: Archive Results
           command: |
-            echo "📁 Archiving analysis results..."
+            echo "Archiving analysis results..."
             mkdir -p /tmp/analysis-results
 
             # Copy analysis files
             cp error_analysis_*.md /tmp/analysis-results/ 2>/dev/null || echo "No analysis files to archive"
             cp logs/application.log /tmp/analysis-results/ 2>/dev/null || echo "No log files to archive"
 
-            echo "✅ Results archived for review"
+            echo "Results archived for review"
 
       - store_artifacts:
           path: /tmp/analysis-results
