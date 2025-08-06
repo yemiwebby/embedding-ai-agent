@@ -102,7 +102,7 @@ jobs:
             fi
 
       - run:
-          name: Archive Results
+          name: Archive Results.
           command: |
             echo "Archiving analysis results..."
             mkdir -p /tmp/analysis-results
